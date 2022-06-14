@@ -2,6 +2,17 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const isDev = process.env.NODE_ENV === "development";
+const isProd = !isDev;
+
+const styleLoadrs = (extra) => {
+  const loaders = [MiniCssExtractPlugin.loader, "css-loader"];
+  if (extra) {
+    loaders.push(extra);
+  }
+  return loaders;
+};
+
 module.exports = {
   mode: "development",
   entry: "./src/index.tsx",
@@ -52,23 +63,16 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: styleLoadrs(),
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          "style-loader",
-          // Translates CSS into CommonJS
-          "css-loader",
-          // Compiles Sass to CSS
-          "sass-loader",
-        ],
+        use: styleLoadrs("sass-loader"),
       },
 
       {
-        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
-        type: "asset/resourse",
+        test: /\.(png|jpg|jpeg|gif)$/i,
+        type: "asset/resource",
       },
       {
         test: /\.(woff|woff2|eot|tff|otf)$/,
