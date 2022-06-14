@@ -10,7 +10,7 @@ module.exports = {
     filename: "main.js",
   },
   devtool: "inline-source-map",
-  // devServer: { contentBase: path.join(__dirname, "src") },
+
   devServer: {
     // static: {
     //   directory: path.join(__dirname, "public"),
@@ -54,6 +54,18 @@ module.exports = {
         test: /\.css$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
+
       {
         test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
         type: "asset/resourse",
